@@ -13,7 +13,7 @@ To install and run this project, simply run following commands:
 
 `npm i`
 
-`npm run start`
+`npm start`
 
 The application with gauges in their default position will start. The background
 script has booted listener. By default, the comminication is done via `websockets`.

@@ -11,6 +11,7 @@
     "max-classes-per-file": false,
     "max-line-length": { "options": [120] },
     "member-ordering": false,
+    "new-parens": false,
     "no-bitwise": false,
     "no-console": false,
     "only-arrow-functions": false,
