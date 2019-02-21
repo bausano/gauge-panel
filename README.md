@@ -5,6 +5,7 @@ Middlesex University London.
 
 My final year project consists of developing a service polling data from flight
 simulator engine and distributing it to the frontend app that animates the UI.
+This repository contains the frontend app.
 
 My supervisor is [Igor Topolski](https://github.com/itopolskiMDX).
 
@@ -26,7 +27,12 @@ You can select one of following listeners:
 ## Docs
 
 ### Architecture
-TODO
+This section is work in progress.
 
 ### Message formats
-TODO
+
+#### UDC
+This section is work in progress.
+
+#### WebSockets
+This section is work in progress.
