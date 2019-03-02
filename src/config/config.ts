@@ -1,3 +1,4 @@
+import { config as loadEnv } from 'dotenv'
 import { Configuration } from './Configuration'
 import { EnviromentVariableEmptyException } from './EnviromentVariableEmptyException'
 
@@ -20,7 +21,12 @@ function env (key: string, def?: string) : string {
   return value || def
 }
 
+// Loads enviroment variables from .env file.
+loadEnv()
+
 export const config: Configuration = {
   DEBUG: env('ENV', 'DEV') === 'DEV',
   INDEX_FILE: 'static/index.html',
+  PING_TIMEOUT: Number(env('PING_TIMEOUT')),
+  SERVER_URL: env('SERVER_URL'),
 }

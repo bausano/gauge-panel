@@ -11,4 +11,16 @@ export interface Configuration {
    */
   INDEX_FILE: string
 
+  /**
+   * Maximum delay for ping messages. If the client does not hear from the
+   * server in given time, it shuts down informing the pilot about failure.
+   */
+  PING_TIMEOUT: number
+
+  /**
+   * The url of the WebSocket server to connect to.
+   * @example {wss://echo.websocket.org/}
+   */
+  SERVER_URL: string
+
 }

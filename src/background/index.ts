@@ -1,6 +1,8 @@
 import { App } from './App'
 import * as path from 'path'
+import * as WebSocket from 'ws'
 import { env } from '../config'
+import { ListenerBag } from './listeners/ListenerBag'
 import { app as electron, BrowserWindow } from 'electron'
 import { WebSocketsListener } from './listeners/WebSocketsListener'
 
@@ -12,10 +14,17 @@ electron.on('ready', () => {
     width: 800,
   })
 
+  // Prepares websocket client.
+  // TODO: WebSocketProvider
+  const client: WebSocket = new WebSocket(env('SERVER_URL'))
+
+  // Creates listener bag that is hooked to parser that sends it to content.
+  const bag: ListenerBag<any> = new ListenerBag
+
   // Boots the app with listener and messaging object.
   const app: App = new App(
     window.webContents,
-    new WebSocketsListener,
+    new WebSocketsListener(client, bag),
   )
 
   // Load the UI with gauges.

@@ -6,4 +6,9 @@ export interface Listener {
    */
   listen () : void
 
+  /**
+   * Resets pong timeout and sends a ping message.
+   */
+  ping () : void
+
 }
