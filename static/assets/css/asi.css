@@ -1,0 +1,18 @@
+
+/**
+ * Airspeed indicator consists of static background image and a needle that is
+ * rotated around its center point.
+ */
+
+.is-asi {
+  background-image: url('../../images/gauges/asi.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.is-asi .needle {
+  background-image: url('../../images/gauges/needle.png');
+  height: 100%;
+  position: relative;
+  transition: transform .75s ease;
+}

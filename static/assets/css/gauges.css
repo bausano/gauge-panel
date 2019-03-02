@@ -1,0 +1,30 @@
+
+/**
+ * Positions gauges. This has to be calibrated based on the screen frame.
+ */
+
+.gauge {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+}
+
+.gauge.top {
+  top: 40px;
+}
+
+.gauge.bottom {
+  bottom: 40px;
+}
+
+.gauge.left {
+  left: 40px;
+}
+
+.gauge.center {
+  left: 400px;
+}
+
+.gauge.right {
+  right: 40px;
+}

@@ -1,3 +1,4 @@
+import { Gauges } from './Gauges'
 import { ipcRenderer } from 'electron'
 
 /**
@@ -9,3 +10,15 @@ import { ipcRenderer } from 'electron'
  */
 
 ipcRenderer.on('app.booted', () => console.log(`[${new Date}] App booted.`))
+
+/**
+ * Element references to gauges.
+ */
+const gauges: Gauges = {
+  asi: document.querySelector('.is-asi .needle'),
+}
+
+// Updates needle rotation.
+ipcRenderer.on('gauge.asi.updated', (_, deg) => {
+  gauges.asi.setAttribute('style', `transform: rotate(${deg}deg)`)
+})

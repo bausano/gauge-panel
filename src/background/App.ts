@@ -19,6 +19,18 @@ export class App {
    */
   public boot () : void {
     this.content.send('app.booted')
+
+    let last: number = 30
+
+    // Simulate asi gauge.
+    setInterval(() => {
+      last += Math.floor(Math.random() * 10) - 3
+
+      last = last < 0 ? 5 : last
+
+      this.content.send('gauge.asi.updated', last)
+    }, 750)
+
   }
 
 }
