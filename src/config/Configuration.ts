@@ -21,6 +21,6 @@ export interface Configuration {
    * The url of the WebSocket server to connect to.
    * @example {wss://echo.websocket.org/}
    */
-  SERVER_URL: string
+  WS_ADDRESS: string
 
 }

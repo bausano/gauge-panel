@@ -28,5 +28,5 @@ export const config: Configuration = {
   DEBUG: env('ENV', 'DEV') === 'DEV',
   INDEX_FILE: 'static/index.html',
   PING_TIMEOUT: Number(env('PING_TIMEOUT')),
-  SERVER_URL: env('SERVER_URL'),
+  WS_ADDRESS: env('WS_ADDRESS'),
 }

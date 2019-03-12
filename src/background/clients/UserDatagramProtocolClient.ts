@@ -1,9 +1,9 @@
-import * as WebSocket from 'ws'
-import { Listener } from './Listener'
+import * as dgram from 'dgram'
+import { Client } from './Client'
 import { env } from '@internal/config'
-import { ListenerBag } from './ListenerBag'
+import { ListenerBag } from '../ListenerBag'
 
-export class WebSocketsListener implements Listener {
+export class UserDatagramProtocolClient implements Client {
 
   /**
    * Heartbeat timeout. Once this runs out, connection is closed and error
@@ -13,10 +13,10 @@ export class WebSocketsListener implements Listener {
 
   /**
    * TODO: Type hint message
-   * @param ws WebSocket client
    * @param bag Listeners to emit messages to
+   * @param udp UDP client
    */
-  constructor (private ws: WebSocket, private bag: ListenerBag<any>) {
+  constructor (public bag: ListenerBag<any>, private udp: dgram.Socket) {
     //
   }
 
@@ -25,22 +25,24 @@ export class WebSocketsListener implements Listener {
    */
   public listen () : void {
     // Upon opening a new connection, send initial ping to the server.
-    this.ws.on('open', () => this.ping())
+    this.udp.on('listening', () => this.ping())
 
-    // For every pong receive, send ping back.
-    this.ws.on('pong', () => this.ping())
+    // TODO: For every pong receive, send ping back.
 
     // When the connection is closed, we clear the ping timeout.
-    this.ws.on('close', () => {
+    const onClosed: (error?: any) => void = (error = 'Without error.') => {
       if (env('DEBUG')) {
-        console.log(`[${new Date}] Connection closed.`)
+        console.log(`[${new Date}] Connection closed.`, error)
       }
 
       clearTimeout(this.pongTimeout)
-    })
+    }
+
+    this.udp.on('error', onClosed)
+    this.udp.on('close', onClosed)
 
     // Parses data and commits them to listeners.
-    this.ws.on('commit', message => this.bag.trigger(
+    this.udp.on('message', message => this.bag.trigger(
       this.parseRawMessage(message),
     ))
   }
@@ -57,11 +59,11 @@ export class WebSocketsListener implements Listener {
     clearTimeout(this.pongTimeout)
 
     // Sends a ping message to the server.
-    this.ws.send('ping')
+    this.send(Buffer.from('ping'))
 
     // If we don't receive pong in given time, consider server dead.
     this.pongTimeout = setTimeout(() => {
-      this.ws.terminate()
+      this.udp.close()
     }, env<number>('PING_TIMEOUT'))
   }
 
@@ -78,6 +80,21 @@ export class WebSocketsListener implements Listener {
     }
 
     return data
+  }
+
+  /**
+   * Sends a message to the server.
+   *
+   * @param data Message to be send to the server
+   * @return Resolves if the data were sent without error, otherwise rejects
+   */
+  private send (data: Buffer|Buffer[]) : Promise<void> {
+    const port: number = env<number>('UDP_PORT')
+    const address: string = env<string>('UDP_ADDRESS')
+
+    return new Promise((resolve, reject) => {
+      this.udp.send(data, port, address, e => e ? reject(e) : resolve())
+    })
   }
 
 }
