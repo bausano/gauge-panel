@@ -24,10 +24,10 @@ export class App {
     let pitch: number = 0
 
     setInterval(() => {
-      degrees += Math.floor(Math.random() * 2) - 1
+      degrees += Math.floor(Math.random() * 3) - 1
       degrees = degrees < 0 ? 5 : degrees > 360 ? 355 : degrees
 
-      pitch -= Math.floor(Math.random() * 2) - 1
+      pitch -= Math.floor(Math.random() * 3) - 1
       pitch = pitch < -20 ? -20 : pitch > 20 ? 20 : pitch
 
       // Simulate asi gauge.

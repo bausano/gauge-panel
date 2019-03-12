@@ -1,3 +1,4 @@
+import { start } from './Engine'
 import { Gauges } from './Gauges'
 import { ipcRenderer } from 'electron'
 
@@ -36,3 +37,5 @@ ipcRenderer.on('gauge.fdai.yaw', (_, deg) => {
 ipcRenderer.on('gauge.fdai.pitch', (_, px) => {
   gauges.fdai.pitch.setAttribute('style', `transform: translate(0px, ${px}px)`)
 })
+
+// start(gauges)
