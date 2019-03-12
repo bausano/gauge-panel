@@ -4,7 +4,7 @@
 *dist/
 
 # Editors
-.vscode/*
+.vscode
 .idea
 
 # Logs

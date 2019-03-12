@@ -4,13 +4,13 @@
  * rotated around its center point.
  */
 
-.is-asi {
-  background-image: url('../../images/gauges/asi.png');
+.is-air-speed-indicator {
+  background-image: url('../../images/gauges/air_speed_indicator.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.is-asi .needle {
+.is-air-speed-indicator .needle {
   background-image: url('../../images/gauges/needle.png');
   height: 100%;
   position: relative;

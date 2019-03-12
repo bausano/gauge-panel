@@ -1,0 +1,34 @@
+
+/**
+ * Flight director attitude indicator tells us the yaw (whether the nose is left
+ * or right and by how much) and the pitch (whether the nose is up or down and
+ * by how much) of the aircraft.
+ */
+
+.is-attitude-indicator {
+  background-image: url('../../images/gauges/attitude_indicator_frame.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.is-attitude-indicator .yaw-wrapper {
+  transition: transform .75s ease;
+  height: 100%;
+  position: relative;
+  z-index: -1;
+}
+
+.is-attitude-indicator .yaw {
+  background-image: url('../../images/gauges/attitude_indicator_yaw.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.is-attitude-indicator .pitch {
+  background-image: url('../../images/gauges/attitude_indicator_pitch.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: transform .75s ease;
+}
