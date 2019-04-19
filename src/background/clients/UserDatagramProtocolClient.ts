@@ -1,3 +1,4 @@
+import * as utf8 from 'utf8'
 import * as dgram from 'dgram'
 import { Topic } from '../Topic'
 import { Client } from './Client'
@@ -95,7 +96,10 @@ export class UserDatagramProtocolClient implements Client {
       // The next 4 bytes create the float value of topic.
       const value: number = data.slice(5, 9).readFloatLE(0)
       // Reference so that we know what topic should we update.
-      const reference: string = data.slice(9).toString()
+      const reference: string = data
+        .slice(9)
+        .filter(byte => byte !== 0)
+        .toString().trim().toLowerCase()
 
       return { reference, value }
     } catch (error) {

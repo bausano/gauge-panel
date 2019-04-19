@@ -1,4 +1,5 @@
 import { Gauges } from './Gauges'
+import { airspeed } from './airspeed'
 import { ipcRenderer } from 'electron'
 
 /**
@@ -24,8 +25,7 @@ const gauges: Gauges = {
 
 // Updates needle rotation.
 ipcRenderer.on('gauge.airspeed', (_, value) => {
-  console.log('received a message for airspeed', value)
-  // gauges.asi.setAttribute('style', `transform: rotate(${deg}deg)`)
+  gauges.asi.setAttribute('style', `transform: rotate(${airspeed(value)}deg)`)
 })
 
 // Updates the gauge rotation.

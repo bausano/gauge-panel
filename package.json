@@ -34,6 +34,7 @@
   "homepage": "https://github.com/bausano/gauge-panel#readme",
   "dependencies": {
     "dotenv": "^6.2.0",
+    "utf8": "^3.0.0",
     "ws": "^6.1.4"
   },
   "devDependencies": {

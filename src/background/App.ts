@@ -19,8 +19,7 @@ export class App {
    */
   public boot () : void {
     this.client.bag.addListener(({ reference, value }) => {
-      console.log('yaya', reference, value)
-      this.content.send(`gauge.${reference.toLowerCase()}`, value)
+      this.content.send(`gauge.${reference}`, value)
     })
 
     this.client.listen()
