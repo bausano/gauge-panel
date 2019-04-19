@@ -1,6 +1,8 @@
 
 /**
- *
+ * An altimeter displays current altitude. The small needle represents thousands
+ * of feet, while the small one represents hundreds. Works similarly to wrist
+ * clock,
  */
 
 .is-altimeter {
