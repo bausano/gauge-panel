@@ -1,0 +1,24 @@
+
+/**
+ *
+ */
+
+.is-altimeter {
+  background-image: url('../../images/gauges/altimeter_frame.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.is-altimeter .needle {
+  background-image: url('../../images/gauges/needle.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.is-altimeter .needle-small {
+  background-image: url('../../images/gauges/needle_small.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}

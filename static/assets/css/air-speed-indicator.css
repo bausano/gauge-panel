@@ -5,7 +5,7 @@
  */
 
 .is-air-speed-indicator {
-  background-image: url('../../images/gauges/air_speed_indicator.png');
+  background-image: url('../../images/gauges/air_speed_indicator_frame.png');
   background-repeat: no-repeat;
   background-size: cover;
 }

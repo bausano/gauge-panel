@@ -21,4 +21,21 @@ export interface Gauges {
     pitch: Element,
   }
 
+  /**
+   * Needles for indicating altitude.
+   */
+  altimeter: {
+
+    /**
+     * Shows hundreds of feet.
+     */
+    needle: Element,
+
+    /**
+     * Shows thousands of feet.
+     */
+    needleSmall: Element,
+
+  }
+
 }

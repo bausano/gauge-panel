@@ -14,7 +14,7 @@
 }
 
 .gauge.bottom {
-  bottom: 40px;
+  top: 380px;
 }
 
 .gauge.left {
@@ -22,9 +22,9 @@
 }
 
 .gauge.center {
-  left: 400px;
+  left: 380px;
 }
 
 .gauge.right {
-  right: 40px;
+  left: 720px;
 }

@@ -3,6 +3,7 @@ import { ipcRenderer } from 'electron'
 import { pitch } from './normalization/pitch'
 import { airspeed } from './normalization/airspeed'
 import { turnRate } from './normalization/turnRate'
+import { altitudeInHundreds, altitudeInThousands } from './normalization/altitude'
 
 /**
  * @notImplemented
@@ -18,6 +19,10 @@ ipcRenderer.on('app.booted', () => console.log(`[${new Date}] App booted.`))
  * Element references to gauges.
  */
 const gauges: Gauges = {
+  altimeter: {
+    needle: document.querySelector('.is-altimeter .needle'),
+    needleSmall: document.querySelector('.is-altimeter .needle-small'),
+  },
   asi: document.querySelector('.is-air-speed-indicator .needle'),
   fdai: {
     pitch: document.querySelector('.is-attitude-indicator .pitch'),
@@ -40,5 +45,22 @@ ipcRenderer.on('gauge.pitch', (_, value) => {
   gauges.fdai.pitch.setAttribute(
     'style',
     `transform: translate(0px, ${pitch(value)}px)`,
+  )
+})
+
+ipcRenderer.on('gauge.altitude', (_, value) => {
+  console.log(
+    altitudeInHundreds(value),
+    altitudeInThousands(value),
+  )
+
+  gauges.altimeter.needle.setAttribute(
+    'style',
+    `transform: rotate(${altitudeInHundreds(value)}deg)`,
+  )
+
+  gauges.altimeter.needleSmall.setAttribute(
+    'style',
+    `transform: rotate(${altitudeInThousands(value)}deg)`,
   )
 })

@@ -9,9 +9,11 @@
  * Imports gauge styles.
  */
 
-@import 'asi.css';
+@import 'air-speed-indicator.css';
 
-@import 'fdai.css';
+@import 'attitude-indicator.css';
+
+@import 'altimeter.css';
 
 html, body {
   margin: 0;
