@@ -21,7 +21,7 @@ export class ListenerBag<T> {
    * @param message Message to emit to listeners
    */
   public trigger (message: T) : void {
-    this.listeners.forEach (listener => listener(message))
+    this.listeners.forEach(listener => listener(message))
   }
 
 }

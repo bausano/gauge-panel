@@ -1,3 +1,4 @@
+import { Topic } from '../Topic'
 import { ListenerBag } from '../ListenerBag'
 
 export interface Client {
@@ -5,7 +6,7 @@ export interface Client {
   /**
    * Listener bag that app listens new messages.
    */
-  bag: ListenerBag<any>
+  bag: ListenerBag<Topic>
 
   /**
    * Starts listening to messages.

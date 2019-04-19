@@ -1,7 +1,7 @@
 import { App } from './App'
 import * as path from 'path'
 import { env } from '../config'
-import { bootWebSocketsClient } from './clients'
+import { bootUserDatagramProtocolClient } from './clients'
 import { app as electron, BrowserWindow } from 'electron'
 
 // Boots the UI.
@@ -15,7 +15,7 @@ electron.on('ready', () => {
   // Boots the app with listener and messaging object.
   const app: App = new App(
     window.webContents,
-    bootWebSocketsClient(),
+    bootUserDatagramProtocolClient(),
   )
 
   // Load the UI with gauges.

@@ -1,4 +1,5 @@
 import * as dgram from 'dgram'
+import { Topic } from '../Topic'
 import { Client } from './Client'
 import { env } from '@internal/config'
 import { ListenerBag } from '../ListenerBag'
@@ -25,7 +26,11 @@ export class UserDatagramProtocolClient implements Client {
    */
   public listen () : void {
     // Upon opening a new connection, send initial ping to the server.
-    this.udp.on('listening', () => this.ping())
+    this.udp.on('listening', ()  => {
+      console.log(`[${new Date}] Listening:`, this.udp.address())
+
+      this.ping()
+    })
 
     // TODO: For every pong receive, send ping back.
 
@@ -45,6 +50,12 @@ export class UserDatagramProtocolClient implements Client {
     this.udp.on('message', message => this.bag.trigger(
       this.parseRawMessage(message),
     ))
+
+    // Boots the server.
+    this.udp.bind(
+      env('UDP_CLIENT_PORT'),
+      env('UDP_AGGREGATOR_ADDRESS'),
+    )
   }
 
   /**
@@ -63,23 +74,33 @@ export class UserDatagramProtocolClient implements Client {
 
     // If we don't receive pong in given time, consider server dead.
     this.pongTimeout = setTimeout(() => {
-      this.udp.close()
+      // this.udp.close()
     }, env<number>('PING_TIMEOUT'))
   }
 
   /**
    * Converts raw incoming data to message.
-   * // TODO: Type hint message
    *
    * @param data Incoming server message
    * @return Parsed data
    */
-  private parseRawMessage (data: any) : any {
-    if (env('DEBUG')) {
-      console.log(`[${new Date}] Incoming message:`, data)
+  private parseRawMessage (data: Buffer) : Topic {
+    // First five bytes have to equal certain string to check the type of the
+    // message.
+    if (data.slice(0, 5).toString() !== 'DREF0') {
+      return
     }
 
-    return data
+    try {
+      // The next 4 bytes create the float value of topic.
+      const value: number = data.slice(5, 9).readFloatLE(0)
+      // Reference so that we know what topic should we update.
+      const reference: string = data.slice(9).toString()
+
+      return { reference, value }
+    } catch (error) {
+      console.log(`[${new Date}] Invalid message format.`, error, data)
+    }
   }
 
   /**
@@ -89,8 +110,8 @@ export class UserDatagramProtocolClient implements Client {
    * @return Resolves if the data were sent without error, otherwise rejects
    */
   private send (data: Buffer|Buffer[]) : Promise<void> {
-    const port: number = env<number>('UDP_PORT')
-    const address: string = env<string>('UDP_ADDRESS')
+    const port: number = env<number>('UDP_AGGREGATOR_PORT')
+    const address: string = env<string>('UDP_AGGREGATOR_ADDRESS')
 
     return new Promise((resolve, reject) => {
       this.udp.send(data, port, address, e => e ? reject(e) : resolve())

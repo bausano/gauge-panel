@@ -1,4 +1,3 @@
-import { start } from './Engine'
 import { Gauges } from './Gauges'
 import { ipcRenderer } from 'electron'
 
@@ -24,8 +23,9 @@ const gauges: Gauges = {
 }
 
 // Updates needle rotation.
-ipcRenderer.on('gauge.asi', (_, deg) => {
-  gauges.asi.setAttribute('style', `transform: rotate(${deg}deg)`)
+ipcRenderer.on('gauge.airspeed', (_, value) => {
+  console.log('received a message for airspeed', value)
+  // gauges.asi.setAttribute('style', `transform: rotate(${deg}deg)`)
 })
 
 // Updates the gauge rotation.
@@ -37,5 +37,3 @@ ipcRenderer.on('gauge.fdai.yaw', (_, deg) => {
 ipcRenderer.on('gauge.fdai.pitch', (_, px) => {
   gauges.fdai.pitch.setAttribute('style', `transform: translate(0px, ${px}px)`)
 })
-
-// start(gauges)

@@ -28,5 +28,9 @@ export const config: Configuration = {
   DEBUG: env('ENV', 'DEV') === 'DEV',
   INDEX_FILE: 'static/index.html',
   PING_TIMEOUT: Number(env('PING_TIMEOUT')),
+  UDP_AGGREGATOR_ADDRESS: env('UDP_AGGREGATOR_ADDRESS'),
+  UDP_AGGREGATOR_PORT: Number(env('UDP_AGGREGATOR_PORT', '49005')),
+  UDP_CLIENT_ADDRESS: env('UDP_CLIENT_ADDRESS'),
+  UDP_CLIENT_PORT: Number(env('UDP_CLIENT_PORT', '49006')),
   WS_ADDRESS: env('WS_ADDRESS'),
 }

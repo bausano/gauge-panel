@@ -23,4 +23,24 @@ export interface Configuration {
    */
   WS_ADDRESS: string
 
+  /**
+   * The address of data aggregator that sends messages with value updates.
+   */
+  UDP_AGGREGATOR_ADDRESS: string
+
+  /**
+   * Aggregator UDP port. The default value should be 49005.
+   */
+  UDP_AGGREGATOR_PORT: number
+
+  /**
+   * The address of gauge panel client.
+   */
+  UDP_CLIENT_ADDRESS: string
+
+  /**
+   * Gauge panel udp port with default value 49006.
+   */
+  UDP_CLIENT_PORT: number
+
 }
