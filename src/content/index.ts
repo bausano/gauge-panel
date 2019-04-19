@@ -1,6 +1,8 @@
 import { Gauges } from './Gauges'
-import { airspeed } from './airspeed'
 import { ipcRenderer } from 'electron'
+import { pitch } from './normalization/pitch'
+import { airspeed } from './normalization/airspeed'
+import { turnRate } from './normalization/turnRate'
 
 /**
  * @notImplemented
@@ -29,11 +31,14 @@ ipcRenderer.on('gauge.airspeed', (_, value) => {
 })
 
 // Updates the gauge rotation.
-ipcRenderer.on('gauge.fdai.yaw', (_, deg) => {
-  gauges.fdai.yaw.setAttribute('style', `transform: rotate(${deg}deg)`)
+ipcRenderer.on('gauge.turn_rate', (_, value) => {
+  gauges.fdai.yaw.setAttribute('style', `transform: rotate(${turnRate(value)}deg)`)
 })
 
 // Updates the gauge translation.
-ipcRenderer.on('gauge.fdai.pitch', (_, px) => {
-  gauges.fdai.pitch.setAttribute('style', `transform: translate(0px, ${px}px)`)
+ipcRenderer.on('gauge.pitch', (_, value) => {
+  gauges.fdai.pitch.setAttribute(
+    'style',
+    `transform: translate(0px, ${pitch(value)}px)`,
+  )
 })

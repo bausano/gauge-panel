@@ -12,7 +12,7 @@
 }
 
 .is-attitude-indicator .yaw-wrapper {
-  transition: transform .75s ease;
+  transition: transform .1s ease;
   height: 100%;
   position: relative;
   z-index: -1;
@@ -30,5 +30,5 @@
   height: 100%;
   width: 100%;
   position: absolute;
-  transition: transform .75s ease;
+  transition: transform .1s ease;
 }
