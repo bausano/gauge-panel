@@ -2,7 +2,7 @@
 export interface Configuration {
 
   /**
-   * Whether the enviroment should use debug utils such as dev console.
+   * Whether the environment should use debug utils such as dev console.
    */
   DEBUG: boolean
 
@@ -16,12 +16,6 @@ export interface Configuration {
    * server in given time, it shuts down informing the pilot about failure.
    */
   PING_TIMEOUT: number
-
-  /**
-   * The url of the WebSocket server to connect to.
-   * @example {wss://echo.websocket.org/}
-   */
-  WS_ADDRESS: string
 
   /**
    * The address of data aggregator that sends messages with value updates.

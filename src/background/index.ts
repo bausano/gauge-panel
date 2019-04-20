@@ -6,11 +6,9 @@ import { app as electron, BrowserWindow } from 'electron'
 
 // Boots the UI.
 electron.on('ready', () => {
-  // Create the browser window.
-  const window: Electron.BrowserWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
-  })
+  // Create the browser window and maximizes it.
+  const window: Electron.BrowserWindow = new BrowserWindow()
+  window.maximize()
 
   // Boots the app with listener and messaging object.
   const app: App = new App(
@@ -25,7 +23,6 @@ electron.on('ready', () => {
   if (env('DEBUG')) {
     window.webContents.openDevTools()
   }
-
   // Once the window is ready, it boots the app.
   window.webContents.on('did-finish-load', () => app.boot())
 })

@@ -1,20 +1,20 @@
 import { config } from './config'
-import { EnviromentVariableEmptyException } from './EnviromentVariableEmptyException'
+import { EnvironmentVariableEmptyException } from './EnvironmentVariableEmptyException'
 
 /**
- * Retrieves enviroment variable from process.
+ * Retrieves environment variable from process.
  *
- * @param key Which enviroment variable to return
- * @param def If the variable is not in the enviroment, default it
+ * @param key Which environment variable to return
+ * @param def If the variable is not in the environment, default it
  * @return Value of the variable or default
- * @throws {EnviromentVariableEmptyException}
+ * @throws {EnvironmentVariableEmptyException}
  */
 export function env<T> (key: string, def?: T) : T {
-  // Retrives desired value from enviroment variables.
+  // Retrieves desired value from environment variables.
   const value: T = config[key]
 
   if (value === undefined && def === undefined) {
-    throw new EnviromentVariableEmptyException
+    throw new EnvironmentVariableEmptyException
   }
 
   return value || def

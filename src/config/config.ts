@@ -1,27 +1,27 @@
 import { config as loadEnv } from 'dotenv'
 import { Configuration } from './Configuration'
-import { EnviromentVariableEmptyException } from './EnviromentVariableEmptyException'
+import { EnvironmentVariableEmptyException } from './EnvironmentVariableEmptyException'
 
 /**
  * Gets process env variable or defaults it.
  *
  * @param key Key to look for
  * @param def Default value if any
- * @return Value of the enviroment variable
- * @throws {EnviromentVariableEmptyException}
+ * @return Value of the environment variable
+ * @throws {EnvironmentVariableEmptyException}
  */
 function env (key: string, def?: string) : string {
-  // Retrives desired value from enviroment variables.
+  // Retrieves desired value from environment variables.
   const value: string = process.env[key]
 
   if (value === undefined && def === undefined) {
-    throw new EnviromentVariableEmptyException
+    throw new EnvironmentVariableEmptyException
   }
 
   return value || def
 }
 
-// Loads enviroment variables from .env file.
+// Loads environment variables from .env file.
 loadEnv()
 
 export const config: Configuration = {
@@ -32,5 +32,4 @@ export const config: Configuration = {
   UDP_AGGREGATOR_PORT: Number(env('UDP_AGGREGATOR_PORT', '49005')),
   UDP_CLIENT_ADDRESS: env('UDP_CLIENT_ADDRESS'),
   UDP_CLIENT_PORT: Number(env('UDP_CLIENT_PORT', '49006')),
-  WS_ADDRESS: env('WS_ADDRESS'),
 }

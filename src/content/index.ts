@@ -13,7 +13,7 @@ ipcRenderer.on('app.booted', () => {
 
   // Registers listeners for all gauges.
   for (const topic in transformers) {
-    ipcRenderer.on(`gauge.${topic}`, value => transformers[topic](value))
+    ipcRenderer.on(`gauge.${topic}`, (_, value) => transformers[topic](value))
   }
 
 })

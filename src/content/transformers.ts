@@ -40,7 +40,7 @@ export const transformers: { [key: string]: transformer } = {
 
   [Topic.AIRSPEED]: value => transform(gauges.asi, `rotate(${airspeed(value)}deg)`),
 
-  [Topic.HEADING]: value => transform(gauges.heading, `transform: rotate(${-value}deg)`),
+  [Topic.HEADING]: value => transform(gauges.heading, `rotate(${-value}deg)`),
 
   [Topic.PITCH]: value => transform(gauges.fdai.pitch, `translate(0px, ${pitch(value)}px)`),
 
