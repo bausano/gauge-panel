@@ -1,9 +1,9 @@
-import * as utf8 from 'utf8'
 import * as dgram from 'dgram'
 import { Topic } from '../Topic'
 import { Client } from './Client'
 import { env } from '@internal/config'
 import { ListenerBag } from '../ListenerBag'
+import { PongException } from './PongException';
 
 export class UserDatagramProtocolClient implements Client {
 
@@ -14,26 +14,16 @@ export class UserDatagramProtocolClient implements Client {
   private pongTimeout: NodeJS.Timeout
 
   /**
-   * TODO: Type hint message
    * @param bag Listeners to emit messages to
    * @param udp UDP client
    */
-  constructor (public bag: ListenerBag<any>, private udp: dgram.Socket) {
-    //
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public listen () : void {
+  constructor (public bag: ListenerBag<Topic>, private udp: dgram.Socket) {
     // Upon opening a new connection, send initial ping to the server.
     this.udp.on('listening', ()  => {
       console.log(`[${new Date}] Listening:`, this.udp.address())
 
       this.ping()
     })
-
-    // TODO: For every pong receive, send ping back.
 
     // When the connection is closed, we clear the ping timeout.
     const onClosed: (error?: any) => void = (error = 'Without error.') => {
@@ -46,11 +36,28 @@ export class UserDatagramProtocolClient implements Client {
 
     this.udp.on('error', onClosed)
     this.udp.on('close', onClosed)
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public listen () : void {
     // Parses data and commits them to listeners.
-    this.udp.on('message', message => this.bag.trigger(
-      this.parseRawMessage(message),
-    ))
+    this.udp.on('message', (message) => {
+      try {
+        this.bag.trigger(this.parseRawMessage(message))
+      } catch (error) {
+        if (error instanceof PongException) {
+          if (env('DEBUG')) {
+            console.log(`[${new Date}] Pong message received.`)
+          }
+
+          return this.ping()
+        }
+
+        console.log(`[${new Date}] Invalid message format.`, error, message)
+      }
+    })
 
     // Boots the server.
     this.udp.bind(
@@ -75,7 +82,14 @@ export class UserDatagramProtocolClient implements Client {
 
     // If we don't receive pong in given time, consider server dead.
     this.pongTimeout = setTimeout(() => {
-      // this.udp.close()
+      if (env('DEBUG')) {
+        console.log(`[${new Date}]
+          Did not receive response from server in
+          ${env<number>('PING_TIMEOUT')} sec.
+          Terminating application.`)
+      }
+
+      // this.udp.close(_ => process.exit(1))
     }, env<number>('PING_TIMEOUT'))
   }
 
@@ -86,25 +100,25 @@ export class UserDatagramProtocolClient implements Client {
    * @return Parsed data
    */
   private parseRawMessage (data: Buffer) : Topic {
+    if (data.slice(0, 4).toString() === 'PONG') {
+      throw new PongException
+    }
+
     // First five bytes have to equal certain string to check the type of the
     // message.
     if (data.slice(0, 5).toString() !== 'DREF0') {
-      return
+      throw new Error
     }
 
-    try {
-      // The next 4 bytes create the float value of topic.
-      const value: number = data.slice(5, 9).readFloatLE(0)
-      // Reference so that we know what topic should we update.
-      const reference: string = data
-        .slice(9)
-        .filter(byte => byte !== 0)
-        .toString().trim().toLowerCase()
+    // The next 4 bytes create the float value of topic.
+    const value: number = data.slice(5, 9).readFloatLE(0)
+    // Reference so that we know what topic should we update.
+    const reference: string = data
+      .slice(9)
+      .filter(byte => byte !== 0)
+      .toString().trim().toLowerCase()
 
-      return { reference, value }
-    } catch (error) {
-      console.log(`[${new Date}] Invalid message format.`, error, data)
-    }
+    return { reference, value }
   }
 
   /**
