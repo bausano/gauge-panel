@@ -3,7 +3,7 @@ import { Topic } from '../Topic'
 import { Client } from './Client'
 import { env } from '@internal/config'
 import { ListenerBag } from '../ListenerBag'
-import { PongException } from './PongException';
+import { PongException } from './PongException'
 
 export class UserDatagramProtocolClient implements Client {
 
