@@ -3,6 +3,7 @@ import { ipcRenderer } from 'electron'
 import { pitch } from './normalization/pitch'
 import { airspeed } from './normalization/airspeed'
 import { turnRate } from './normalization/turnRate'
+import { climbFpm } from './normalization/climbFpm'
 import { altitudeInHundreds, altitudeInThousands } from './normalization/altitude'
 
 /**
@@ -28,19 +29,24 @@ const gauges: Gauges = {
     pitch: document.querySelector('.is-attitude-indicator .pitch'),
     yaw: document.querySelector('.is-attitude-indicator .yaw-wrapper'),
   },
+  heading: document.querySelector('.is-heading-indicator .frame'),
+  turnCoordinator: {
+    plane: document.querySelector('.is-turn-coordinator .plane'),
+  },
+  variometer: document.querySelector('.is-variometer .needle'),
 }
 
-// Updates needle rotation.
 ipcRenderer.on('gauge.airspeed', (_, value) => {
   gauges.asi.setAttribute('style', `transform: rotate(${airspeed(value)}deg)`)
 })
 
-// Updates the gauge rotation.
 ipcRenderer.on('gauge.turn_rate', (_, value) => {
-  gauges.fdai.yaw.setAttribute('style', `transform: rotate(${turnRate(value)}deg)`)
+  gauges.turnCoordinator.plane.setAttribute(
+    'style',
+    `transform: rotate(${turnRate(value)}deg)`,
+  )
 })
 
-// Updates the gauge translation.
 ipcRenderer.on('gauge.pitch', (_, value) => {
   gauges.fdai.pitch.setAttribute(
     'style',
@@ -49,11 +55,6 @@ ipcRenderer.on('gauge.pitch', (_, value) => {
 })
 
 ipcRenderer.on('gauge.altitude', (_, value) => {
-  console.log(
-    altitudeInHundreds(value),
-    altitudeInThousands(value),
-  )
-
   gauges.altimeter.needle.setAttribute(
     'style',
     `transform: rotate(${altitudeInHundreds(value)}deg)`,
@@ -62,5 +63,19 @@ ipcRenderer.on('gauge.altitude', (_, value) => {
   gauges.altimeter.needleSmall.setAttribute(
     'style',
     `transform: rotate(${altitudeInThousands(value)}deg)`,
+  )
+})
+
+ipcRenderer.on('gauge.vvi_fpm', (_, value) => {
+  gauges.variometer.setAttribute(
+    'style',
+    `transform: rotate(${climbFpm(value)}deg)`,
+  )
+})
+
+ipcRenderer.on('gauge.heading', (_, value) => {
+  gauges.heading.setAttribute(
+    'style',
+    `transform: rotate(${-value}deg)`,
   )
 })

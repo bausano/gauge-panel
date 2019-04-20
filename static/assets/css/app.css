@@ -15,6 +15,12 @@
 
 @import 'altimeter.css';
 
+@import 'heading-indicator.css';
+
+@import 'turn-coordinator.css';
+
+@import 'variometer.css';
+
 html, body {
   margin: 0;
   padding: 0;

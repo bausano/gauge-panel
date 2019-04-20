@@ -6,5 +6,5 @@
  * @return How many pixels should be the gauge be translated by
  */
 export function pitch (value: number) : number {
-  return value * 1.5
+  return Math.max(-38, Math.min(38, value * 1.5))
 }

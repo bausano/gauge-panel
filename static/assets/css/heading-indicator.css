@@ -1,0 +1,19 @@
+
+/**
+ * Shows position with regard to poles.
+ */
+
+ .is-heading-indicator .frame {
+  background-image: url('../../images/gauges/heading_indicator_frame.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: transform .1s ease;
+}
+
+.is-heading-indicator .direction {
+  background-image: url('../../images/gauges/heading_indicator_airplane.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}

@@ -1,0 +1,18 @@
+
+/**
+ * Airspeed indicator consists of static background image and a needle that is
+ * rotated around its center point.
+ */
+
+.is-variometer {
+  background-image: url('../../images/gauges/variometer_frame.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.is-variometer .needle {
+  background-image: url('../../images/gauges/needle.png');
+  height: 100%;
+  position: relative;
+  transition: transform .1s ease;
+}

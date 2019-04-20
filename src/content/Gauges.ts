@@ -38,4 +38,26 @@ export interface Gauges {
 
   }
 
+  /**
+   * Rate of climb and descent indicator.
+   */
+  variometer: Element
+
+  /**
+   * Shows rate or turn and standard rate of turn approximation.
+   */
+  turnCoordinator: {
+
+    /**
+     * Shows rate of turn.
+     */
+    plane: Element,
+
+  },
+
+  /**
+   * Towards which pole is the airplane heading.
+   */
+  heading: Element
+
 }

@@ -1,0 +1,28 @@
+
+/**
+ * Flight director attitude indicator tells us the yaw (whether the nose is left
+ * or right and by how much) and the pitch (whether the nose is up or down and
+ * by how much) of the aircraft.
+ */
+
+.is-turn-coordinator {
+  background-image: url('../../images/gauges/turn_coordinator_frame.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.is-turn-coordinator .dot {
+  background-image: url('../../images/gauges/turn_coordinator_dot.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: transform .1s ease;
+}
+
+.is-turn-coordinator .plane {
+  background-image: url('../../images/gauges/turn_coordinator_plane.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: transform .1s ease;
+}
