@@ -6,5 +6,5 @@
  * @return Normalized angle
  */
 export function turnRate (value: number) : number {
-  return value * -1
+  return Math.max(-70, Math.min(70, value))
 }

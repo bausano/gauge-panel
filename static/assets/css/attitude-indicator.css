@@ -9,6 +9,7 @@
   background-image: url('../../images/gauges/attitude_indicator_frame.png');
   background-repeat: no-repeat;
   background-size: cover;
+  overflow: hidden;
 }
 
 .is-attitude-indicator .yaw-wrapper {

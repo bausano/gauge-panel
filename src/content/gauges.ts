@@ -66,3 +66,29 @@ export interface Gauges {
   heading: Element
 
 }
+
+/**
+ * Returns object that holds all references to gauge elements.
+ *
+ * @param document DOM reference
+ * @return Object with gauge elements
+ */
+export const gaugesFactory: (document: Document) => Gauges = (document) => {
+  return {
+    altimeter: {
+      needle: document.querySelector('.is-altimeter .needle'),
+      needleSmall: document.querySelector('.is-altimeter .needle-small'),
+    },
+    asi: document.querySelector('.is-air-speed-indicator .needle'),
+    fdai: {
+      pitch: document.querySelector('.is-attitude-indicator .pitch'),
+      yaw: document.querySelector('.is-attitude-indicator .yaw-wrapper'),
+    },
+    heading: document.querySelector('.is-heading-indicator .frame'),
+    turnCoordinator: {
+      dot: document.querySelector('.is-turn-coordinator .dot'),
+      plane: document.querySelector('.is-turn-coordinator .plane'),
+    },
+    variometer: document.querySelector('.is-variometer .needle'),
+  }
+}
