@@ -1,5 +1,6 @@
 import { Gauges } from './Gauges'
 import { ipcRenderer } from 'electron'
+import { slip } from './normalization/slip'
 import { pitch } from './normalization/pitch'
 import { airspeed } from './normalization/airspeed'
 import { turnRate } from './normalization/turnRate'
@@ -31,6 +32,7 @@ const gauges: Gauges = {
   },
   heading: document.querySelector('.is-heading-indicator .frame'),
   turnCoordinator: {
+    dot: document.querySelector('.is-turn-coordinator .dot'),
     plane: document.querySelector('.is-turn-coordinator .plane'),
   },
   variometer: document.querySelector('.is-variometer .needle'),
@@ -77,5 +79,12 @@ ipcRenderer.on('gauge.heading', (_, value) => {
   gauges.heading.setAttribute(
     'style',
     `transform: rotate(${-value}deg)`,
+  )
+})
+
+ipcRenderer.on('gauge.slip', (_, value) => {
+  gauges.turnCoordinator.dot.setAttribute(
+    'style',
+    `transform: translate(${slip(value)}px, 0px)`,
   )
 })

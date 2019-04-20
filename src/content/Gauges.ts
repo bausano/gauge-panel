@@ -49,6 +49,11 @@ export interface Gauges {
   turnCoordinator: {
 
     /**
+     * Shows slip.
+     */
+    dot: Element,
+
+    /**
      * Shows rate of turn.
      */
     plane: Element,
