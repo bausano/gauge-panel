@@ -62,14 +62,14 @@ export class UserDatagramProtocolClient implements Client {
     // Boots the server.
     this.udp.bind(
       env('UDP_CLIENT_PORT'),
-      env('UDP_AGGREGATOR_ADDRESS'),
+      env('UDP_CLIENT_ADDRESS'),
     )
   }
 
   /**
    * {@inheritdoc}
    */
-  public ping () : void {
+  public async ping () : Promise<void> {
     if (env('DEBUG')) {
       console.log(`[${new Date}] Pinged.`)
     }
@@ -77,20 +77,26 @@ export class UserDatagramProtocolClient implements Client {
     // Clears timeout that would terminate the connection.
     clearTimeout(this.pongTimeout)
 
+    const pingTimeout: number = env<number>('PING_TIMEOUT')
+
+    // Waits half the amount of time of pingTimeout. This prevents spamming the
+    // network with ping pong messages.
+    await new Promise(resolve => setTimeout(resolve, pingTimeout / 2))
+
     // Sends a ping message to the server.
-    this.send(Buffer.from('ping'))
+    this.send(Buffer.from('000000000ping/gauge_panel')).catch(console.log)
 
     // If we don't receive pong in given time, consider server dead.
     this.pongTimeout = setTimeout(() => {
       if (env('DEBUG')) {
-        console.log(`[${new Date}]
-          Did not receive response from server in
-          ${env<number>('PING_TIMEOUT')} sec.
-          Terminating application.`)
+        console.log(
+          `[${new Date}] Did not receive response from server in
+          ${pingTimeout} ms. Terminating application.`,
+        )
       }
 
-      // this.udp.close(_ => process.exit(1))
-    }, env<number>('PING_TIMEOUT'))
+      this.udp.close(() => process.exit(1))
+    }, pingTimeout)
   }
 
   /**
@@ -100,10 +106,6 @@ export class UserDatagramProtocolClient implements Client {
    * @return Parsed data
    */
   private parseRawMessage (data: Buffer) : Topic {
-    if (data.slice(0, 4).toString() === 'PONG') {
-      throw new PongException
-    }
-
     // First five bytes have to equal certain string to check the type of the
     // message.
     if (data.slice(0, 5).toString() !== 'DREF0') {
@@ -117,6 +119,10 @@ export class UserDatagramProtocolClient implements Client {
       .slice(9)
       .filter(byte => byte !== 0)
       .toString().trim().toLowerCase()
+
+    if (reference === 'ping_gauge_panel') {
+      throw new PongException
+    }
 
     return { reference, value }
   }

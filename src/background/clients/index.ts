@@ -12,7 +12,10 @@ import { UserDatagramProtocolClient } from './UserDatagramProtocolClient'
  * @return Client connected to udp server
  */
 export function bootUserDatagramProtocolClient () : Client {
-  const client: dgram.Socket = dgram.createSocket('udp4')
+  const client: dgram.Socket = dgram.createSocket({
+    reuseAddr: true,
+    type: 'udp4',
+  })
 
   return new UserDatagramProtocolClient(new ListenerBag, client)
 }
