@@ -54,8 +54,6 @@ export class UserDatagramProtocolClient implements Client {
 
           return this.ping()
         }
-
-        console.log(`[${new Date}] Invalid message format.`, error, message)
       }
     })
 
@@ -83,9 +81,6 @@ export class UserDatagramProtocolClient implements Client {
     // network with ping pong messages.
     await new Promise(resolve => setTimeout(resolve, pingTimeout / 2))
 
-    // Sends a ping message to the server.
-    this.send(Buffer.from('000000000ping/gauge_panel')).catch(console.log)
-
     // If we don't receive pong in given time, consider server dead.
     this.pongTimeout = setTimeout(() => {
       if (env('DEBUG')) {
@@ -97,6 +92,9 @@ export class UserDatagramProtocolClient implements Client {
 
       this.udp.close(() => process.exit(1))
     }, pingTimeout)
+
+    // Sends a ping message to the server.
+    this.send(Buffer.from('000000000ping/gauge_panel'))
   }
 
   /**
