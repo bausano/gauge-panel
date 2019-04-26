@@ -9,30 +9,12 @@ This repository contains the frontend app.
 
 My supervisor is [Igor Topolski](https://github.com/itopolskiMDX).
 
-## Installation
+## Usage
 To install and run this project, simply run following commands:
 
 `npm i`
 
 `npm start`
 
-The application with gauges in their default position will start. The background
-script has booted listener. By default, the comminication is done via `websockets`.
-You can select one of following listeners:
-
-`npm run start:ws`
-
-`npm run start:udc`
-
-## Docs
-
-### Architecture
-This section is work in progress.
-
-### Message formats
-
-#### UDC
-This section is work in progress.
-
-#### WebSockets
-This section is work in progress.
+## Configuration
+Ensure the `.env` file is configured properly.
