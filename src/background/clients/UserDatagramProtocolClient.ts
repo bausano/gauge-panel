@@ -67,7 +67,7 @@ export class UserDatagramProtocolClient implements Client {
   /**
    * {@inheritdoc}
    */
-  public async ping () : Promise<void> {
+  public async ping (warning: boolean = false) : Promise<void> {
     if (env('DEBUG')) {
       console.log(`[${new Date}] Pinged.`)
     }
@@ -83,6 +83,10 @@ export class UserDatagramProtocolClient implements Client {
 
     // If we don't receive pong in given time, consider server dead.
     this.pongTimeout = setTimeout(() => {
+      if (!warning) {
+        return this.ping(true)
+      }
+
       if (env('DEBUG')) {
         console.log(
           `[${new Date}] Did not receive response from server in
@@ -94,7 +98,7 @@ export class UserDatagramProtocolClient implements Client {
     }, pingTimeout)
 
     // Sends a ping message to the server.
-    this.send(Buffer.from('000000000ping/gauge_panel'))
+    this.send(Buffer.from(`000000000ping/gauge_panel`))
   }
 
   /**
